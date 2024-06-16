@@ -58,6 +58,6 @@ describe("getProductsList lambda function", (): void => {
     )) as APIGatewayProxyResult;
 
     expect(result.statusCode).toBe(404);
-    expect(result.body).toBe(JSON.stringify({ message: "Product not found" }));
+    expect(result.body).toBe(JSON.stringify({ message: "Product with requested id doesn't exist" }));
   });
 });

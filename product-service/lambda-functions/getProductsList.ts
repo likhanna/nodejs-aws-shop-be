@@ -15,7 +15,7 @@ export const handler: APIGatewayProxyHandler = async (
           "Access-Control-Allow-Headers": "Content-Type",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: "Product not found" }),
+        body: JSON.stringify({ message: "Product with requested id doesn't exist" }),
       };
     }
   

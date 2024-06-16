@@ -61,7 +61,7 @@ paths:
                   price:
                     type: number
         '404':
-          description: Product not found
+          description: Product with requested id doesn't exist
         '500':
           description: Internal server error
 
