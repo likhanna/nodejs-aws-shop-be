@@ -34,6 +34,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
 const createProduct = (data: NewProduct): Promise<ProductStock | void> => {
   const id = randomUUID();
+  const { title, description, price, count } = data;
+
   const newProductPromise = dynamodb.send(
     new TransactWriteCommand({
       TransactItems: [
@@ -41,8 +43,10 @@ const createProduct = (data: NewProduct): Promise<ProductStock | void> => {
           Put: {
             TableName: process.env.PRODUCTS_TABLE_NAME,
             Item: {
-              ...data,
               id,
+              title,
+              description,
+              price,
             },
           },
         },
@@ -51,7 +55,7 @@ const createProduct = (data: NewProduct): Promise<ProductStock | void> => {
             TableName: process.env.STOCKS_TABLE_NAME,
             Item: {
               product_id: id,
-              count: data.count,
+              count,
             },
           },
         },
@@ -75,9 +79,13 @@ const isNewProductValid = (body: string) => {
   const { title, description, price, count } = newProduct;
 
   return (
+    title &&
     typeof title === 'string' &&
+    description &&
     typeof description === 'string' &&
+    price > 0 &&
     typeof price === 'number' &&
+    count >= 0 &&
     typeof count === 'number'
   );
 };
