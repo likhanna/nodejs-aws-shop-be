@@ -1,0 +1,32 @@
+openapi: 3.0.3
+info:
+  title: Import Service API
+  description: API AWS shop
+  version: 1.0.0
+servers:
+  - url: https://pqk7o5l18l.execute-api.eu-west-1.amazonaws.com/prod
+paths:
+  /import:
+    get:
+      summary: Get signed URL for importing a file
+      description: Import products from CSV
+      parameters:
+        - in: query
+          name: filename
+          required: true
+          schema:
+            type: string
+          description: Name of the file to import
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+              example: 'https://import-service-bucket-task5.s3.eu-west-1.amazonaws.com/uploaded/import.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZQ3DR7VHT36KL27J%2F%2F20240630%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20240630T103811Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCWV1LXdlc3QtMSJHMEUCIQCHng1p0tk8fw7kWZSTAL8q53IoUoxwzLmgeX0WTp7tDgIgCk5Oux%2Bd68X5eEXDbvK4a8uQws%2BcCnmDquj917kOyMAq0wMIRBAAGgw2NTQ2NTQ0Mzg3MzUiDKkrsVtCKsU0XAFjuSqwA%2BRYauzOISnD8%2BWr5M1fNNbjV5hjkPrMyz%2Bo3chxRPWtbCdySjM8CLOs%2F0pr4gAWvBM6Hvia%2FxKmBB1fuE4F0t8kD3l1LLswoc3dt4Cpyh0nJWCyOyI%2BcyUVhGMk1Rp9FI8S57o33nE6U1AXb57lxMT2KhpB4WRr0JwNDSTefSJKQzCDgPqXaT3f81pM%2BdzwgIldYEHk8O9mhpM3LyIAW1zdesgiiwPvfGkyxSDILBeRSH84sTjCzh2FM2qI67HCnhRr0FU1tRg0%2FUDMl%2BULY1Ln2cWeWin3UmVmaz7T1Ax4w8iLmQQhdoYUF1SGpjy3Bk8flb9rxh%2FJE0jTeLPo01s%2FZLTI%2FU4wDQRH2aY35m9u4%2FO4Gu40DdfSwoxs0bHPILPI97yY9DI%2BS03lJC3N%2B03JufsBZSVuvQibBRn%2BFuMnj%2Bd5OH7NSV1WY8Kz0yDhBDTexv4tUKX4%2B7k0fAH2iGoBbWyDpntvTqlfG87Mv3ooavi%2F7a9E4yCkN6tm4TBpG9F8dNdXkkDTI%2Bq7qjMw5WLiKVdCmiDc8kY0Ce3cj5tB3cq2uA664SkANuTMAk8U2DCS64S0BjqeAXkzPv1iOszIXeX%2FhPN1sXqm%2BhnD3os%2FgH4FRLJrvVB8%2BLNLjwSpacHJI00q9wTXtVdki274%2BsYGuS84sswWycR76x6Y9RQnQ%2FeMslqvOjGOhc9VzGDVy6Clj%2BPtJtkB7J1s%2BTeoWYkWuJoFrdP7qYGWQSs4gLWJx5%2Fy4OYMjOPvI3AvKTJlZBO3o8nY7bQVFnz90kUnHGXQ1EJpA30y&X-Amz-Signature=c62f399c91ec9c44726da34fc19aba1622470f603ecd6b2bc3e6f78f66ef6af4&X-Amz-SignedHeaders=host&x-id=PutObject'
+        '400':
+          description: File name is not provided
+        '500':
+          description: Internal server error
