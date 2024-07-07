@@ -4,6 +4,12 @@ export const region = process.env.REGION ?? "eu-west-1";
 export const bucketName =
   process.env.BUCKET_NAME ?? "import-service-bucket-task5";
 export const prefix = process.env.PREFIX ?? "uploaded/";
+export const catalogItemsQueueArn =
+  process.env.CATALOG_ITEMS_QUEUE_ARN ??
+  "arn:aws:sqs:eu-west-1:654654438735:catalog-items-queue";
+export const catalogItemsQueueUrl =
+  process.env.QUEUE_URL ??
+  "https://sqs.eu-west-1.amazonaws.com/654654438735/catalog-items-queue";
 
 export const basicHeaders = {
   "Access-Control-Allow-Origin": "*",
