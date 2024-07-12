@@ -5,8 +5,8 @@ import {
   GetObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-
-import { region } from "./utils/index";
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { catalogItemsQueueUrl, ErrorMessages, region } from "./utils/index";
 import { Readable } from "stream";
 import csvParser = require("csv-parser");
 
@@ -19,7 +19,8 @@ export const handler = async (event: S3Event): Promise<void> => {
 
   console.log(`File ${key} successfully uploaded to ${bucketName}`);
 
-  const client = new S3Client({ region });
+  const s3client = new S3Client({ region });
+  const sqsClient = new SQSClient({ region });
 
   try {
     const getCommand = new GetObjectCommand({
@@ -40,23 +41,32 @@ export const handler = async (event: S3Event): Promise<void> => {
       Key: key,
     });
 
-    const { Body: readableStream } = await client.send(getCommand);
+    const { Body: readableStream } = await s3client.send(getCommand);
 
     if (readableStream instanceof Readable) {
       readableStream
         .pipe(csvParser())
-        .on("data", (data) => {
-          console.log("item from CSV", data);
+        .on("data", async (data) => {
+          const snsParams = {
+            QueueUrl: catalogItemsQueueUrl,
+            MessageBody: JSON.stringify(data),
+          };
+
+          try {
+            await sqsClient.send(new SendMessageCommand(snsParams));
+          } catch (error) {
+            console.error("SQS error: ", error);
+          }
         })
         .on("end", () => {
           console.log("CSV parsing completed.");
         });
     } else {
-      throw new Error("Not a readable stream");
+      throw new Error(ErrorMessages.STREAM_ERROR_MISSING);
     }
 
-    await client.send(copyCommand);
-    await client.send(deleteCommand);
+    await s3client.send(copyCommand);
+    await s3client.send(deleteCommand);
     console.log('CSV moved from "uploaded" to "parsed" directory');
   } catch (error) {
     console.error("Error", error);

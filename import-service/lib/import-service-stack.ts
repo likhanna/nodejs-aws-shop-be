@@ -4,14 +4,25 @@ import { Cors, LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
 import { HttpMethod, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Bucket, EventType } from "aws-cdk-lib/aws-s3";
 import { LambdaDestination } from "aws-cdk-lib/aws-s3-notifications";
+import { Queue } from "aws-cdk-lib/aws-sqs";
 import { Construct } from "constructs";
-import { bucketName, prefix, region } from "../lambda-functions/utils";
+import {
+  bucketName,
+  catalogItemsQueueArn,
+  prefix,
+  region,
+} from "../lambda-functions/utils";
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const bucket = Bucket.fromBucketName(this, "ImportBucket", bucketName);
+    const queue = Queue.fromQueueArn(
+      this,
+      "CatalogItemsQueue",
+      catalogItemsQueueArn
+    );
 
     const importProductsFile = new lambda.Function(
       this,
@@ -37,6 +48,7 @@ export class ImportServiceStack extends cdk.Stack {
         environment: {
           PRODUCT_AWS_REGION: region,
           BUCKET_NAME: bucket.bucketName,
+          QUEUE_URL: queue.queueUrl,
         },
       }
     );
@@ -74,5 +86,7 @@ export class ImportServiceStack extends cdk.Stack {
         prefix: prefix,
       }
     );
+
+    queue.grantSendMessages(importFileParser);
   }
 }
