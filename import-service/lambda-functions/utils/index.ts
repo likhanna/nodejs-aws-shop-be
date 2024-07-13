@@ -10,6 +10,8 @@ export const catalogItemsQueueArn =
 export const catalogItemsQueueUrl =
   process.env.QUEUE_URL ??
   "https://sqs.eu-west-1.amazonaws.com/654654438735/catalog-items-queue";
+export const basicAuthorizerFuncName =
+  process.env.BASIC_AUTHORIZER_FUNC_NAME || "BasicAuthorizerLambda";
 
 export const basicHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,9 +20,15 @@ export const basicHeaders = {
     "Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token",
 };
 
+export const authorizerHeaders = {
+  "Access-Control-Allow-Origin": "'*'",
+};
+
 export enum HttpStatusCode {
   OK = 200,
   BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
   NOT_FOUND = 404,
   METHOD_NOT_ALLOWED = 405,
   UNPROCESSABLE_CONTENT = 422,
