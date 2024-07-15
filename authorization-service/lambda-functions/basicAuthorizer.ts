@@ -28,7 +28,7 @@ export const handler = async (
 
     const token = authorizationToken.split(" ")[1];
     const encodedToken = Buffer.from(token, "base64").toString("utf-8");
-    const [userName, password] = encodedToken.split("=");
+    const [userName, password] = encodedToken.split(":");
     const correctPassword = process.env[userName];
 
     const effect =
