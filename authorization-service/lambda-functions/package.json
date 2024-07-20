@@ -1,0 +1,16 @@
+{
+  "name": "lambda-functions",
+  "version": "1.0.0",
+  "main": "basicAuthorizer.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "aws-cdk-lib": "^2.149.0",
+    "dotenv": "^16.4.5",
+    "path": "^0.12.7"
+  }
+}
