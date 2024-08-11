@@ -59,8 +59,7 @@ export class AppService {
       ),
     );
 
-    const isGetProductsListReq =
-      service === Service.PRODUCTS_SERVICE && method === 'GET' && url === '/product/products';
+    const isGetProductsListReq = service === Service.PRODUCTS && method === 'GET' && url === '/product/products';
 
     if (isGetProductsListReq) {
       console.log('PRODUCTS CACHE CREATED');

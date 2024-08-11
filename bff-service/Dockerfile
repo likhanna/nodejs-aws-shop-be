@@ -25,4 +25,4 @@ USER node
 ENV PORT=4000
 EXPOSE 4000
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/src/main.js" ]
