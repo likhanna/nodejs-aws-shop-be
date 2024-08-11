@@ -28,7 +28,7 @@ export class AppController {
 
     const { url, method, headers } = req;
 
-    if (service === Service.PRODUCTS && method === 'GET' && cachedProducts) {
+    if (service === Service.PRODUCTS_SERVICE && method === 'GET' && cachedProducts) {
       console.log('cashed products: ', cachedProducts);
       return res.status(cachedProducts.status).send(cachedProducts.data);
     }

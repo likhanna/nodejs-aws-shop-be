@@ -1,6 +1,6 @@
 export enum Service {
-  PRODUCTS = 'product',
-  CART = 'cart',
+  PRODUCTS_SERVICE = 'product',
+  CART_SERVUCE = 'cart',
 }
 
 export const ALLOWED_ROUTES = Object.values(Service);

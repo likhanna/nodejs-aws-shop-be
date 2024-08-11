@@ -30,12 +30,12 @@ export class AppService {
     body: any;
     query: string;
   }) {
-    console.log('Req to service:', service);
+    console.log('Request to service:', service);
     const serviceBaseUrl = this.configService.get(`${service.toUpperCase()}_SERVICE_URL`);
 
     const serviceUrl = url.replace(`/${service}/`, serviceBaseUrl);
 
-    console.log('ServiceUrl:', serviceUrl);
+    console.log('Redirecting request to:', serviceUrl);
 
     const authToken = headers?.authorization;
 
@@ -59,8 +59,8 @@ export class AppService {
       ),
     );
 
-    const isGetProductsListReq = service === Service.PRODUCTS && method === 'GET' && url === '/product/products';
-
+    const isGetProductsListReq =
+      service === Service.PRODUCTS_SERVICE && method === 'GET' && url === '/product/products';
     if (isGetProductsListReq) {
       console.log('PRODUCTS CACHE CREATED');
       await this.cacheManager.set('products', { status, data });
